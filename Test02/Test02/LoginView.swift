@@ -12,39 +12,23 @@ import SwiftUI
 // 카멜표기법을 따라야지...
 
 struct LoginView: View {
-    @State var id:String="" // 전역변수
-    @State var pwd:String=""
-    // X
+    @State var name: String = "yuchaemin"
+    @State var id:String="test1" // 전역변수
+    @State var pwd:String="test1"
+    @State var isSucceedLogin:Bool=false
+    var age:Int = 30
     var body: some View {
         // UI 추가
         // dpi
         NavigationView {
             VStack{
-                HStack {
-                    Text("ID")
-                    TextField("ID 입력", text: $id).onChange(of: id) { oldValue, newValue in
-                        print("\(oldValue) \(newValue)")
-                    }
-                }
-                HStack{
-                    Text("PWD")
-                    TextField("PWD 입력", text: $pwd)
-                }
+                NavigationLink(destination: MainView(), isActive: $isSucceedLogin, label: {
+                    
+                })
                 
-                Button("로그인") {
-                    print("로그인")
-                    var a=10
-                    let b=20
-                    var c:String="aaaaa"
+                Button{
                     
-                    // print("a + b = \(a+b) \(c)"+c)
-                    print("id : \(id)")
-                    print("pwd : \(pwd)")
-                    if id.count < 4 {
-                        print("ID를 입력해 주세요")
-                    }
-                    
-                    guard let url=URL(string: "http://localhost/login.php")
+                    guard let url=URL(string: "http://localhost/ip1/login.php")
                     else {
                         print("url error")
                         return
@@ -66,10 +50,20 @@ struct LoginView: View {
                             return
                         }
                         
-           
+                        let str = String(decoding: data, as: UTF8.self)
+                        
+                        print("data ? \(str)")
+                        
+                        if str == "1"{
+                            print("로그인 성공")
+                            isSucceedLogin=true
+                        }
+
                     }.resume()
+                } label: {
+                    Text("로그인")
                 }
-                NavigationLink(destination: MainView()) {Text("로그인")}
+                
             }
             .padding(.horizontal, 30.0)
         }
